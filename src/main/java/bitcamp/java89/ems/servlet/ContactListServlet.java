@@ -8,23 +8,27 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems.dao.impl.ContactMysqlDao;
 import bitcamp.java89.ems.vo.Contact;
 
 @WebServlet("/contact/list")
-public class ContactListServlet extends AbstractServlet{
+public class ContactListServlet extends HttpServlet {
+  private static final long serialVersionUID = 1L;
   
   @Override
-  public void service(ServletRequest request, ServletResponse response) 
-      throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       ContactMysqlDao contactDao = ContactMysqlDao.getInstance();
       ArrayList<Contact> list = contactDao.getList();
       
-//      웹 브라우저 쪽으로 출력할 수 있도록 출력 스트림 객체를 얻는
+//      웹브라우저 쪽으로 출력할 수 있도록 출력 스트림 객체를 얻는다.
       response.setContentType("text/plain;charset=UTF-8");
       PrintWriter out = response.getWriter();
+      
       for (Contact contact : list) {
         out.printf("%s,%s,%s,%s\n",
             contact.getName(),
@@ -36,4 +40,5 @@ public class ContactListServlet extends AbstractServlet{
       throw new ServletException(e);
     }
   }
+
 }
