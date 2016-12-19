@@ -6,7 +6,7 @@ import bitcamp.java89.ems.vo.Teacher;
 
 public interface TeacherDao {
   ArrayList<Teacher> getList() throws Exception;
-  ArrayList<Teacher> getListById(String id) throws Exception;
+  Teacher getDetail(String id) throws Exception;
   void insert(Teacher teacher) throws Exception;
   void update(Teacher teacher) throws Exception;
   void delete(String id) throws Exception;

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>강사관리-입력폼</title>
+</head>
+<body>
+<h1>강사 등록폼</h1>
+<form action='add' method='post'>
+<table border='1'>
+<tr><th>아이디</th><td><input name="id" type='text' placeholder='예)ID'></td></tr>
+<tr><th>이름</th><td><input name="name" type='text' placeholder='예)홍길동'></td></tr>
+<tr><th>이메일</th><td><input name="email" type='text' placeholder='예)hong@test.com'></td></tr>
+<tr><th>전화번호</th><td><input name="tel" type='text' placeholder='예)010-1111-2222'></td></tr>
+<tr><th>전공</th><td><input name="major" type='text' placeholder='예)컴퓨터공학'></td></tr>
+<tr><th>주요언어</th><td><input name="majorLanguage" type='text' placeholder='예)JAVA'></td></tr>
+<tr><th>깃주소</th><td><input name="gitAddress" type='text' placeholder='예)https://github.com/joelweon'></td></tr>
+<tr><th>근무년수</th><td><input name="workExperience" type='number' placeholder='예)5'></td></tr>
+<tr><th>강의년수</th><td><input name="lectureExperience" type='number' placeholder='예)2'></td></tr>
+<tr><th>나이</th><td><input name="age" type='number' placeholder='예)40'></td></tr>
+<tr><th>희망연봉</th><td><input name="salary" type='number' placeholder='예)40000000'></td></tr>
+</table>
+<button type='submit'>등록</button>
+<a href='list'>목록</a>
+</form>
+</body>
+</html>

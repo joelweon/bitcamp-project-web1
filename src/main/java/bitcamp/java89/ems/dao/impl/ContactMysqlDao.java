@@ -9,11 +9,10 @@ import bitcamp.java89.ems.dao.ContactDao;
 import bitcamp.java89.ems.util.DataSource;
 import bitcamp.java89.ems.vo.Contact;
 
-//@Component // ApplicationContext가 관리하는 클래스임을 표시하기 위해 태그를 단다.
 public class ContactMysqlDao implements ContactDao {
   DataSource ds;
   
-//  Singleton 패턴 - start
+  // Singleton 패턴 - start
   private ContactMysqlDao() {
     ds = DataSource.getInstance();
   }
@@ -26,12 +25,11 @@ public class ContactMysqlDao implements ContactDao {
     }
     return instance;
   }
-//  end - Singleton 패턴
-
+  // end - Singleton 패턴
+  
   public ArrayList<Contact> getList() throws Exception {
     ArrayList<Contact> list = new ArrayList<>();
-    // 커넥션 풀에서 한 개의 Connection 객체를 임대한다.
-    Connection con = ds.getConnection();  // 닫으면안되기 때문에(자원을 다시씀) try에 넣지않는다.
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
           "select posi, name, tel, email from ex_contacts");
@@ -45,15 +43,15 @@ public class ContactMysqlDao implements ContactDao {
         contact.setEmail(rs.getString("email"));
         list.add(contact);
       }
-    } finally { // 에러나든말든 돌려줘야한다.
-        ds.returnConnection(con);
+    } finally {
+      ds.returnConnection(con);
     }
     return list;
   }
   
   public ArrayList<Contact> getListByName(String name) throws Exception {
-    Connection con = ds.getConnection();
     ArrayList<Contact> list = new ArrayList<>();
+    Connection con = ds.getConnection();
     try (
       PreparedStatement stmt = con.prepareStatement(
           "select posi, name, tel, email from ex_contacts where name=?"); ) {
@@ -77,6 +75,31 @@ public class ContactMysqlDao implements ContactDao {
     return list;
   }
   
+  public Contact getDetail(String email) throws Exception {
+    Connection con = ds.getConnection();
+    Contact contact = null;
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "select posi, name, tel, email from ex_contacts where email=?"); ) {
+      
+      stmt.setString(1, email);
+      ResultSet rs = stmt.executeQuery();
+      
+      if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
+        contact = new Contact(); 
+        contact.setName(rs.getString("name"));
+        contact.setPosition(rs.getString("posi"));
+        contact.setTel(rs.getString("tel"));
+        contact.setEmail(rs.getString("email"));
+      }      
+      rs.close();
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+    return contact;
+  }
+  
   public void insert(Contact contact) throws Exception {
     Connection con = ds.getConnection();
     try (
@@ -89,7 +112,9 @@ public class ContactMysqlDao implements ContactDao {
       stmt.setString(4, contact.getPosition());
       
       stmt.executeUpdate();
-    } 
+    } finally {
+      ds.returnConnection(con);
+    }
   }
   
   public void update(Contact contact) throws Exception {
@@ -106,7 +131,7 @@ public class ContactMysqlDao implements ContactDao {
       stmt.executeUpdate();
     } finally {
       ds.returnConnection(con);
-    }
+    } 
   }
   
   public void delete(String email) throws Exception {
@@ -118,9 +143,9 @@ public class ContactMysqlDao implements ContactDao {
       stmt.setString(1, email);
       
       stmt.executeUpdate();
-    }  finally {
+    } finally {
       ds.returnConnection(con);
-    }
+    } 
   }
   
   public boolean existEmail(String email) throws Exception {

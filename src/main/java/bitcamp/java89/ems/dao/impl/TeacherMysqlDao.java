@@ -64,7 +64,7 @@ public class TeacherMysqlDao implements TeacherDao {
     try (
       PreparedStatement stmt = con.prepareStatement(
           "insert into ex_teachers(id, name, email, tel, major, mlanguage, gitaddr,"
-          + " work, lecture, age, salary) values(?,?,?,?,?,?,?,?,?,?,?)"); ) {
+          + "work, lecture, age, salary) values(?,?,?,?,?,?,?,?,?,?,?)"); ) {
       
       stmt.setString(1, teacher.getId());
       stmt.setString(2, teacher.getName());
@@ -88,8 +88,8 @@ public class TeacherMysqlDao implements TeacherDao {
     Connection con = ds.getConnection();
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "update ex_teachers set name=?, email=?, tel=?, major=?, mlanguage=?,"
-          + " gitaddr=?, work=?, lecture=?, age=?, salary=? where id=?"); ) {
+          "update ex_teachers set name=?, email=?, tel=?, major=?, mlanguage=?, "
+          + "gitaddr=?, work=?, lecture=?, age=?, salary=? where id=?"); ) {
       
       stmt.setString(1, teacher.getName());
       stmt.setString(2, teacher.getEmail());
@@ -104,6 +104,8 @@ public class TeacherMysqlDao implements TeacherDao {
       stmt.setString(11, teacher.getId());
       
       stmt.executeUpdate();
+    } finally {
+      ds.returnConnection(con);
     }
   }
   
@@ -120,6 +122,39 @@ public class TeacherMysqlDao implements TeacherDao {
       ds.returnConnection(con);
     }
   }
+  
+  public Teacher getDetail(String id) throws Exception {
+    Connection con = ds.getConnection();
+    Teacher teacher = null;
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "select id, name, email, tel, major, mlanguage, gitaddr, work,"
+          + "lecture, age, salary from ex_teachers where id=?"); ) {
+      
+      stmt.setString(1, id);
+      ResultSet rs = stmt.executeQuery();
+      
+      if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
+        teacher = new Teacher(); 
+        teacher.setId(rs.getString("id"));
+        teacher.setName(rs.getString("name"));
+        teacher.setEmail(rs.getString("email"));
+        teacher.setTel(rs.getString("tel"));
+        teacher.setMajor(rs.getString("major"));
+        teacher.setMajorLanguage(rs.getString("mlanguage"));
+        teacher.setGitAddress(rs.getString("gitaddr"));
+        teacher.setWorkExperience(rs.getInt("work"));
+        teacher.setLectureExperience(rs.getInt("lecture"));
+        teacher.setAge(rs.getInt("age"));
+        teacher.setSalary(rs.getInt("salary"));
+      }
+      rs.close();
+    } finally {
+      ds.returnConnection(con);
+    }
+    return teacher;
+  }
+  
   
   public boolean existId(String id) throws Exception {
     Connection con = ds.getConnection();
@@ -141,42 +176,4 @@ public class TeacherMysqlDao implements TeacherDao {
       ds.returnConnection(con);
     }
   }
-  
-  
-  public ArrayList<Teacher> getListById(String id) throws Exception {
-    Connection con = ds.getConnection();
-    ArrayList<Teacher> list = new ArrayList<>();
-    try (
-      PreparedStatement stmt = con.prepareStatement(
-          "select id, name, email, tel, major, mlanguage, gitaddr, work,"
-          + " lecture, age, salary from ex_teachers where id=?"); ) {
-      
-      stmt.setString(1, id);
-      ResultSet rs = stmt.executeQuery();
-      
-      while (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
-        Teacher teacher = new Teacher(); 
-        teacher.setName(rs.getString("name"));
-        teacher.setEmail(rs.getString("email"));
-        teacher.setTel(rs.getString("tel"));
-        teacher.setMajor(rs.getString("major"));
-        teacher.setMajorLanguage(rs.getString("mlanguage"));
-        teacher.setGitAddress(rs.getString("gitaddr"));
-        teacher.setWorkExperience(rs.getInt("work"));
-        teacher.setLectureExperience(rs.getInt("lecture"));
-        teacher.setAge(rs.getInt("age"));
-        teacher.setSalary(rs.getInt("salary"));
-        teacher.setId(rs.getString("id"));
-        list.add(teacher);
-      }
-      
-      rs.close();
-    } finally {
-      ds.returnConnection(con);
-    }
-    return list;
-  }
-  
-  
-  
 }
