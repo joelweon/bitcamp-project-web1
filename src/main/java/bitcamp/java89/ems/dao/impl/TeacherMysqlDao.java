@@ -124,8 +124,8 @@ public class TeacherMysqlDao implements TeacherDao {
   }
   
   public Teacher getDetail(String id) throws Exception {
-    Connection con = ds.getConnection();
     Teacher teacher = null;
+    Connection con = ds.getConnection();
     try (
       PreparedStatement stmt = con.prepareStatement(
           "select id, name, email, tel, major, mlanguage, gitaddr, work,"

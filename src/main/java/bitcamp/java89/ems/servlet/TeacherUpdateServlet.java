@@ -34,7 +34,7 @@ public class TeacherUpdateServlet extends HttpServlet {
     teacher.setAge(Integer.parseInt(request.getParameter("age")));
     teacher.setSalary(Integer.parseInt(request.getParameter("salary")));
     
-    response.setHeader("Refresh","1;url=list");
+    response.setHeader("Refresh", "1;url=list");
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
     

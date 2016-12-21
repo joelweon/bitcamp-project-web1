@@ -31,8 +31,7 @@ public class DataSource {
   public Connection getConnection() throws Exception {
     if (conPool.size() == 0) {
       System.out.println("DB 커넥션 생성");
-      return DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", 
-          "java89", "1111");
+      return DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", "java89", "1111");
     } else {
       return conPool.remove(0); //0 번방에 있는 객체 리턴. 꺼내면서 제거 -> 사이즈가 줄어듦.
     }

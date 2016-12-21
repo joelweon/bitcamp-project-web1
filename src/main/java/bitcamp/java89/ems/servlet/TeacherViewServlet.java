@@ -54,13 +54,13 @@ public class TeacherViewServlet extends HttpServlet {
       out.printf("<tr><th>전공</th><td>"
           + "<input name='major' type='text' value='%s'></td></tr>\n", teacher.getMajor());
       out.printf("<tr><th>주요언어</th><td>"
-          + "<input name='mlanguage' type='text' value='%s'></td></tr>\n", teacher.getMajorLanguage());
+          + "<input name='majorLanguage' type='text' value='%s'></td></tr>\n", teacher.getMajorLanguage());
       out.printf("<tr><th>Git주소</th><td>"
-          + "<input name='gitaddr' type='text' value='%s'></td></tr>\n", teacher.getGitAddress());
+          + "<input name='gitAddress' type='text' value='%s'></td></tr>\n", teacher.getGitAddress());
       out.printf("<tr><th>근무년수</th><td>"
-          + "<input name='work' type='number' value='%d'></td></tr>\n", teacher.getWorkExperience());
+          + "<input name='workExperience' type='number' value='%d'></td></tr>\n", teacher.getWorkExperience());
       out.printf("<tr><th>강의년수</th><td>"
-          + "<input name='lecture' type='number' value='%d'></td></tr>\n", teacher.getLectureExperience());
+          + "<input name='lectureExperience' type='number' value='%d'></td></tr>\n", teacher.getLectureExperience());
       out.printf("<tr><th>나이</th><td>"
           + "<input name='age' type='number' value='%d'></td></tr>\n", teacher.getAge());
       out.printf("<tr><th>희망급여</th><td>"
